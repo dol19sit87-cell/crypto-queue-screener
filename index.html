@@ -5,18 +5,462 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Crypto Queue Screener</title>
   <style>
-    :root{color-scheme:dark;--bg:#0f1318;--panel:#171d24;--panel2:#111820;--text:#eef3f7;--muted:#92a0ad;--grid:#27313b;--green:#11c48a;--red:#ff4f68;--blue:#50a7ff;--amber:#ffcc5c}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}header{padding:22px 28px 14px;border-bottom:1px solid var(--grid);background:#10161d;position:sticky;top:0;z-index:2}h1{margin:0 0 10px;font-size:28px;line-height:1.1;letter-spacing:0}.summary{display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:14px}.pill{border:1px solid var(--grid);background:var(--panel);border-radius:999px;padding:7px 10px}main{padding:20px 28px 32px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}.tile{min-height:260px;border:1px solid var(--grid);background:linear-gradient(180deg,var(--panel),var(--panel2));border-radius:8px;padding:16px;position:relative;overflow:hidden}.tile:before{content:"";position:absolute;inset:0;border-left:5px solid var(--blue);opacity:.95;pointer-events:none}.tile.long:before{border-left-color:var(--green)}.tile.short:before{border-left-color:var(--red)}.tileTop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}h2{margin:0;font-size:28px;line-height:1;letter-spacing:0}p{margin:7px 0 0;color:var(--muted);font-size:13px;line-height:1.25}.badge{white-space:nowrap;border:1px solid var(--grid);border-radius:999px;padding:6px 9px;font-size:12px;color:var(--text);background:#202833}.badge.retest{border-color:#2f81d0;color:#9fd0ff}.badge.ready,.badge.open{border-color:#d69e2e;color:#ffe08a}.direction{font-size:44px;line-height:1;font-weight:800;margin:16px 0 18px}.long .direction{color:var(--green)}.short .direction{color:var(--red)}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.metrics div,.timeline div{border:1px solid var(--grid);border-radius:6px;padding:9px;background:rgba(255,255,255,.025);min-width:0}span{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}strong,b{font-size:15px;font-weight:750;overflow-wrap:anywhere}.timeline{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}footer{color:var(--muted);padding:0 28px 22px;font-size:12px}@media(max-width:640px){header,main,footer{padding-left:14px;padding-right:14px}.grid{grid-template-columns:1fr}h1{font-size:24px}}
+    :root {
+      color-scheme: dark;
+      --bg: #0b0f14;
+      --panel: #121922;
+      --panel2: #0e141c;
+      --line: #24303d;
+      --line2: #1b2530;
+      --text: #eef4f8;
+      --muted: #8fa0af;
+      --soft: #b7c4cf;
+      --green: #18c98f;
+      --red: #ff526b;
+      --amber: #f2bd54;
+      --blue: #58a6ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      padding: 18px 22px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(11, 15, 20, .94);
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .summary {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .pill {
+      min-height: 30px;
+      border: 1px solid var(--line);
+      background: #111820;
+      border-radius: 999px;
+      padding: 7px 10px;
+      white-space: nowrap;
+    }
+
+    main { padding: 16px 22px 28px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 12px;
+    }
+
+    .tile {
+      min-height: 304px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, var(--panel), var(--panel2));
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .22);
+    }
+
+    .tile.long { border-color: rgba(24, 201, 143, .42); }
+    .tile.short { border-color: rgba(255, 82, 107, .42); }
+    .tile.open { border-color: rgba(242, 189, 84, .6); }
+
+    .chartWrap {
+      height: 188px;
+      position: relative;
+      border-bottom: 1px solid var(--line2);
+      background:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 100% 25%, 12.5% 100%;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .symbolGhost {
+      position: absolute;
+      left: 14px;
+      top: 10px;
+      max-width: calc(100% - 120px);
+      font-size: 38px;
+      line-height: 1;
+      font-weight: 850;
+      color: rgba(238, 244, 248, .13);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      pointer-events: none;
+    }
+
+    .price {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      padding: 5px 8px;
+      border: 1px solid var(--line);
+      background: rgba(8, 12, 16, .74);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .body { padding: 12px 13px 13px; }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .sub {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.24;
+    }
+
+    .badge {
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      background: #1a222d;
+      border-radius: 999px;
+      padding: 6px 8px;
+      color: var(--soft);
+      font-size: 11px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .badge.retest { border-color: rgba(88, 166, 255, .5); color: #9fd0ff; }
+    .badge.ready, .badge.open { border-color: rgba(242, 189, 84, .62); color: #ffe08a; }
+
+    .side {
+      font-size: 26px;
+      line-height: 1;
+      font-weight: 860;
+      margin-bottom: 10px;
+    }
+
+    .long .side { color: var(--green); }
+    .short .side { color: var(--red); }
+    .open .side { color: var(--amber); }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+    }
+
+    .metric {
+      min-width: 0;
+      border: 1px solid var(--line2);
+      border-radius: 6px;
+      padding: 7px;
+      background: rgba(255,255,255,.026);
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.1;
+    }
+
+    .value {
+      display: block;
+      overflow-wrap: anywhere;
+      font-size: 12px;
+      font-weight: 760;
+      line-height: 1.16;
+    }
+
+    .times {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      margin-top: 8px;
+    }
+
+    .empty {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 24px;
+      color: var(--muted);
+      background: var(--panel);
+    }
+
+    footer {
+      padding: 0 22px 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 720px) {
+      header, main, footer { padding-left: 12px; padding-right: 12px; }
+      .grid { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .chartWrap { height: 178px; }
+    }
   </style>
 </head>
 <body>
-  <header><h1>Crypto Queue Screener</h1><div id="summary" class="summary"></div></header>
-  <main><section id="grid" class="grid"></section></main>
-  <footer>Sorted by local heat: max(NATR, last 5m range, displacement/4). Data source: Crypto Signal Observer queue export.</footer>
+  <header>
+    <h1>Crypto Queue Screener</h1>
+    <div class="summary" id="summary">
+      <div class="pill">Загрузка data.json...</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="grid" id="grid"></section>
+  </main>
+
+  <footer>Источник: m5-flag-observer-state.json + последние M5 свечи из Binance. Только наблюдение и paper trading.</footer>
+
   <script>
-    const fmt=(v,d=2)=>Number.isFinite(Number(v))?Number(v).toFixed(d):"-";
-    const esc=(v)=>String(v??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
-    function cardHtml(c){const dir=c.direction||"";const side=dir.startsWith("SHORT")?"short":dir.startsWith("LONG")?"long":"watch";const badge=c.status==="OPEN_TRADE"?"open":c.status==="SIGNAL_READY"?"ready":c.status==="WAITING_RETEST"?"retest":"watch";return `<article class="tile ${side}"><div class="tileTop"><div><h2>${esc(c.symbol)}</h2><p>${esc(c.pattern||"-")} · ${esc(c.lineMode||"-")}</p></div><span class="badge ${badge}">${esc(c.status||"-")}</span></div><div class="direction">${esc(dir)}</div><div class="metrics"><div><span>NATR</span><strong>${fmt(c.natr)}</strong></div><div><span>5m range</span><strong>${fmt(c.range)}</strong></div><div><span>Impulse</span><strong>${fmt(c.impulse)}%</strong></div><div><span>Displ.</span><strong>${fmt(c.displacement)}%</strong></div><div><span>Vol X</span><strong>${fmt(c.volumeX)}</strong></div><div><span>Width</span><strong>${fmt(c.width)}%</strong></div></div><div class="timeline"><div><span>Breakout</span><b>${esc(c.breakoutTime||"-")}</b></div><div><span>Entry</span><b>${esc(c.entryTime||"-")}</b></div></div></article>`}
-    fetch("data.json?ts="+Date.now()).then(r=>r.json()).then(data=>{const cards=(data.cards||[]).sort((a,b)=>(b.heat||0)-(a.heat||0));document.getElementById("summary").innerHTML=[`Updated: ${esc(data.updatedAt||"-")}`,`Symbols: ${cards.length}`,`Watchlist: ${data.watchlistCount||0}`,`Active setups: ${data.setupCount||0}`,`Open paper: ${data.openTradeCount||0}`].map(x=>`<div class="pill">${x}</div>`).join("");document.getElementById("grid").innerHTML=cards.length?cards.map(cardHtml).join(""):"<article class='tile'><h2>Empty</h2><p>No queue symbols.</p></article>"}).catch(e=>{document.getElementById("grid").innerHTML=`<article class='tile'><h2>Error</h2><p>${esc(e.message)}</p></article>`});
+    const grid = document.getElementById("grid");
+    const summary = document.getElementById("summary");
+
+    const fmt = (value, digits = 2) => {
+      const number = Number(value);
+      if (!Number.isFinite(number)) return "-";
+      return number.toFixed(digits);
+    };
+
+    const compactPrice = (value) => {
+      const number = Number(value);
+      if (!Number.isFinite(number)) return "-";
+      if (number >= 100) return number.toFixed(2);
+      if (number >= 1) return number.toFixed(4);
+      if (number >= 0.01) return number.toFixed(5);
+      return number.toPrecision(4);
+    };
+
+    const shortTime = (value) => {
+      if (!value) return "-";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return String(value).replace("T", " ");
+      return date.toLocaleString("ru-RU", {
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    };
+
+    const statusClass = (status) => {
+      if (status === "OPEN_TRADE") return "open";
+      if (status === "SIGNAL_READY") return "ready";
+      if (status === "WAITING_RETEST") return "retest";
+      return "watch";
+    };
+
+    const sideClass = (card) => {
+      if (card.status === "OPEN_TRADE") return "open";
+      const direction = String(card.direction || "");
+      if (direction.startsWith("SHORT")) return "short";
+      if (direction.startsWith("LONG")) return "long";
+      return "watch";
+    };
+
+    function metric(label, value) {
+      return `<div class="metric"><span class="label">${label}</span><span class="value">${value}</span></div>`;
+    }
+
+    function renderSummary(data) {
+      summary.innerHTML = [
+        `Updated: ${shortTime(data.updatedAt)}`,
+        `Symbols: ${data.cards?.length ?? 0}`,
+        `Watchlist: ${data.watchlistCount ?? 0}`,
+        `Active setups: ${data.setupCount ?? 0}`,
+        `Open paper: ${data.openTradeCount ?? 0}`
+      ].map((item) => `<div class="pill">${item}</div>`).join("");
+    }
+
+    function renderCards(cards) {
+      if (!cards.length) {
+        grid.innerHTML = `<div class="empty">Пока нет тикеров в очереди.</div>`;
+        return;
+      }
+
+      grid.innerHTML = cards.map((card, index) => {
+        const side = sideClass(card);
+        const status = statusClass(card.status);
+        return `
+          <article class="tile ${side}" data-index="${index}">
+            <div class="chartWrap">
+              <canvas width="620" height="376"></canvas>
+              <div class="symbolGhost">${card.symbol ?? ""}</div>
+              <div class="price">${compactPrice(card.lastPrice)}</div>
+            </div>
+            <div class="body">
+              <div class="top">
+                <div>
+                  <h2>${card.symbol ?? "-"}</h2>
+                  <div class="sub">${card.pattern ?? "-"} · ${card.lineMode ?? "-"}</div>
+                </div>
+                <span class="badge ${status}">${card.status ?? "-"}</span>
+              </div>
+              <div class="side">${card.direction ?? "-"}</div>
+              <div class="metrics">
+                ${metric("NATR", fmt(card.natr))}
+                ${metric("Range", fmt(card.range))}
+                ${metric("Impulse", `${fmt(card.impulse)}%`)}
+                ${metric("Vol X", fmt(card.volumeX))}
+              </div>
+              <div class="times">
+                ${metric("Breakout", shortTime(card.breakoutTime))}
+                ${metric("Entry", shortTime(card.entryTime))}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function drawChart(canvas, card) {
+      const candles = Array.isArray(card.candles) ? card.candles : [];
+      const ctx = canvas.getContext("2d");
+      const width = canvas.width;
+      const height = canvas.height;
+      ctx.clearRect(0, 0, width, height);
+
+      if (!candles.length) {
+        ctx.fillStyle = "rgba(183, 196, 207, .7)";
+        ctx.font = "24px system-ui";
+        ctx.fillText("no candles", 28, 76);
+        return;
+      }
+
+      const pad = { left: 18, right: 20, top: 20, bottom: 62 };
+      const priceHeight = height - pad.top - pad.bottom;
+      const volumeTop = height - 50;
+      const volumeHeight = 35;
+      const lows = candles.map((c) => Number(c.l));
+      const highs = candles.map((c) => Number(c.h));
+      const volumes = candles.map((c) => Number(c.v));
+      let min = Math.min(...lows);
+      let max = Math.max(...highs);
+      const spread = max - min || max * 0.01 || 1;
+      min -= spread * 0.07;
+      max += spread * 0.07;
+      const maxVolume = Math.max(...volumes, 1);
+
+      const xStep = (width - pad.left - pad.right) / candles.length;
+      const candleWidth = Math.max(3, Math.min(8, xStep * .58));
+      const y = (price) => pad.top + ((max - price) / (max - min)) * priceHeight;
+
+      ctx.strokeStyle = "rgba(255,255,255,.06)";
+      ctx.lineWidth = 1;
+      for (let i = 1; i < 4; i += 1) {
+        const yy = pad.top + (priceHeight * i / 4);
+        ctx.beginPath();
+        ctx.moveTo(pad.left, yy);
+        ctx.lineTo(width - pad.right, yy);
+        ctx.stroke();
+      }
+
+      candles.forEach((candle, i) => {
+        const open = Number(candle.o);
+        const close = Number(candle.c);
+        const high = Number(candle.h);
+        const low = Number(candle.l);
+        const volume = Number(candle.v);
+        const x = pad.left + (i + .5) * xStep;
+        const up = close >= open;
+        const color = up ? "#18c98f" : "#ff526b";
+
+        ctx.fillStyle = up ? "rgba(24, 201, 143, .22)" : "rgba(255, 82, 107, .22)";
+        const vh = (volume / maxVolume) * volumeHeight;
+        ctx.fillRect(x - candleWidth / 2, volumeTop + volumeHeight - vh, candleWidth, vh);
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(x, y(high));
+        ctx.lineTo(x, y(low));
+        ctx.stroke();
+
+        const bodyTop = y(Math.max(open, close));
+        const bodyBottom = y(Math.min(open, close));
+        const bodyHeight = Math.max(2, bodyBottom - bodyTop);
+        ctx.fillStyle = color;
+        ctx.fillRect(x - candleWidth / 2, bodyTop, candleWidth, bodyHeight);
+      });
+
+      const last = candles[candles.length - 1];
+      const lastY = y(Number(last.c));
+      ctx.strokeStyle = "rgba(238,244,248,.28)";
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.moveTo(pad.left, lastY);
+      ctx.lineTo(width - pad.right, lastY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    function drawAll(cards) {
+      document.querySelectorAll(".tile").forEach((tile) => {
+        const index = Number(tile.dataset.index);
+        const canvas = tile.querySelector("canvas");
+        drawChart(canvas, cards[index]);
+      });
+    }
+
+    async function load() {
+      try {
+        const response = await fetch(`data.json?t=${Date.now()}`, { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        const cards = Array.isArray(data.cards) ? data.cards : [];
+        renderSummary(data);
+        renderCards(cards);
+        drawAll(cards);
+      } catch (error) {
+        summary.innerHTML = `<div class="pill">Ошибка загрузки data.json</div>`;
+        grid.innerHTML = `<div class="empty">${error.message}</div>`;
+      }
+    }
+
+    window.addEventListener("resize", () => load());
+    load();
+    setInterval(load, 60000);
   </script>
 </body>
 </html>
