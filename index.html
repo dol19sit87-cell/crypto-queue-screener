@@ -86,6 +86,16 @@
     .tile.long { border-color: rgba(24, 201, 143, .42); }
     .tile.short { border-color: rgba(255, 82, 107, .42); }
     .tile.open { border-color: rgba(242, 189, 84, .6); }
+    .tile.fresh {
+      box-shadow:
+        0 12px 28px rgba(0, 0, 0, .22),
+        0 0 0 1px rgba(88, 166, 255, .20),
+        0 0 24px rgba(88, 166, 255, .10);
+    }
+
+    .tile.stale {
+      border-color: rgba(143, 160, 175, .24);
+    }
 
     .chartWrap {
       height: 188px;
@@ -304,8 +314,15 @@
     }
 
     function renderSummary(data) {
+      const cards = Array.isArray(data.cards) ? data.cards : [];
+      const candleTimes = cards
+        .map((card) => new Date(card.lastCandleTime).getTime())
+        .filter((time) => Number.isFinite(time));
+      const lastCandleTime = candleTimes.length ? new Date(Math.max(...candleTimes)).toISOString() : "";
       summary.innerHTML = [
-        `Updated: ${shortTime(data.updatedAt)}`,
+        `Data: ${shortTime(data.updatedAt)}`,
+        `Candle: ${shortTime(lastCandleTime)}`,
+        `Queue: ${shortTime(data.stateUpdatedAt)}`,
         `Symbols: ${data.cards?.length ?? 0}`,
         `Watchlist: ${data.watchlistCount ?? 0}`,
         `Active setups: ${data.setupCount ?? 0}`,
@@ -322,8 +339,11 @@
       grid.innerHTML = cards.map((card, index) => {
         const side = sideClass(card);
         const status = statusClass(card.status);
+        const lastCandleMs = new Date(card.lastCandleTime).getTime();
+        const candleAgeMs = Number.isFinite(lastCandleMs) ? Date.now() - lastCandleMs : Infinity;
+        const freshness = candleAgeMs <= 12 * 60 * 1000 ? "fresh" : "stale";
         return `
-          <article class="tile ${side}" data-index="${index}">
+          <article class="tile ${side} ${freshness}" data-index="${index}">
             <div class="chartWrap">
               <canvas width="620" height="376"></canvas>
               <div class="symbolGhost">${card.symbol ?? ""}</div>
