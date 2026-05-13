@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-store">
   <title>Crypto Queue Screener</title>
   <style>
     :root {
@@ -266,6 +267,10 @@
   <script>
     const grid = document.getElementById("grid");
     const summary = document.getElementById("summary");
+    const dataSources = [
+      "https://raw.githubusercontent.com/dol19sit87-cell/crypto-queue-screener/main/data.json",
+      "data.json"
+    ];
 
     const fmt = (value, digits = 2) => {
       const number = Number(value);
@@ -465,9 +470,21 @@
 
     async function load() {
       try {
-        const response = await fetch(`data.json?t=${Date.now()}`, { cache: "no-store" });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.json();
+        const stamp = Date.now();
+        let data = null;
+        let lastError = null;
+        for (const source of dataSources) {
+          try {
+            const join = source.includes("?") ? "&" : "?";
+            const response = await fetch(`${source}${join}t=${stamp}`, { cache: "no-store" });
+            if (!response.ok) throw new Error(`${source} HTTP ${response.status}`);
+            data = await response.json();
+            break;
+          } catch (error) {
+            lastError = error;
+          }
+        }
+        if (!data) throw lastError || new Error("data.json unavailable");
         const cards = Array.isArray(data.cards) ? data.cards : [];
         renderSummary(data);
         renderCards(cards);
