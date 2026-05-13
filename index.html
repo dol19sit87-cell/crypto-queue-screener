@@ -268,8 +268,18 @@
     const grid = document.getElementById("grid");
     const summary = document.getElementById("summary");
     const dataSources = [
-      "https://raw.githubusercontent.com/dol19sit87-cell/crypto-queue-screener/main/data.json",
-      "data.json"
+      {
+        type: "github-api",
+        url: "https://api.github.com/repos/dol19sit87-cell/crypto-queue-screener/contents/data.json?ref=main"
+      },
+      {
+        type: "json",
+        url: "https://raw.githubusercontent.com/dol19sit87-cell/crypto-queue-screener/main/data.json"
+      },
+      {
+        type: "json",
+        url: "data.json"
+      }
     ];
 
     const fmt = (value, digits = 2) => {
@@ -468,6 +478,24 @@
       });
     }
 
+    function decodeBase64Utf8(text) {
+      const binary = atob(String(text || "").replace(/\s/g, ""));
+      const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+      return new TextDecoder("utf-8").decode(bytes);
+    }
+
+    async function fetchJsonSource(source, stamp) {
+      const join = source.url.includes("?") ? "&" : "?";
+      const response = await fetch(`${source.url}${join}t=${stamp}`, {
+        cache: "no-store",
+        headers: source.type === "github-api" ? { Accept: "application/vnd.github+json" } : {}
+      });
+      if (!response.ok) throw new Error(`${source.url} HTTP ${response.status}`);
+      const payload = await response.json();
+      if (source.type !== "github-api") return payload;
+      return JSON.parse(decodeBase64Utf8(payload.content));
+    }
+
     async function load() {
       try {
         const stamp = Date.now();
@@ -475,10 +503,7 @@
         let lastError = null;
         for (const source of dataSources) {
           try {
-            const join = source.includes("?") ? "&" : "?";
-            const response = await fetch(`${source}${join}t=${stamp}`, { cache: "no-store" });
-            if (!response.ok) throw new Error(`${source} HTTP ${response.status}`);
-            data = await response.json();
+            data = await fetchJsonSource(source, stamp);
             break;
           } catch (error) {
             lastError = error;
