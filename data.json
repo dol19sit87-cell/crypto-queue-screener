@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-06-15T14:13:50.3784840Z",
-  "stateUpdatedAt": "2026-06-15T14:10:58.532465Z",
+  "updatedAt": "2026-06-15T14:14:55.6036690Z",
+  "stateUpdatedAt": "2026-06-15T14:14:23.393647Z",
   "watchlistCount": 3,
   "setupCount": 0,
   "openTradeCount": 0,
@@ -11,8 +11,8 @@
       "direction": "LONG?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 1.8,
-      "range": 0.87,
+      "natr": 1.86,
+      "range": 0.8,
       "impulse": 8.34,
       "displacement": 8.34,
       "volumeX": 24.76,
@@ -592,13 +592,13 @@
         {
           "t": 1781532600000,
           "o": 0.1374,
-          "h": 0.1381,
+          "h": 0.1429,
           "l": 0.1368,
-          "c": 0.1378,
-          "v": 2156069.7
+          "c": 0.1413,
+          "v": 9383066.4
         }
       ],
-      "lastPrice": 0.1378,
+      "lastPrice": 0.1413,
       "lastCandleTime": "2026-06-15T14:10:00.0000000+00:00"
     },
     {
@@ -607,8 +607,8 @@
       "direction": "LONG?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 0.73,
-      "range": 0.47,
+      "natr": 0.7,
+      "range": 0.59,
       "impulse": 3.31,
       "displacement": 3.31,
       "volumeX": 12.98,
@@ -1190,11 +1190,11 @@
           "o": 0.421,
           "h": 0.4224,
           "l": 0.4199,
-          "c": 0.4216,
-          "v": 189660.1
+          "c": 0.4215,
+          "v": 213508.2
         }
       ],
-      "lastPrice": 0.4216,
+      "lastPrice": 0.4215,
       "lastCandleTime": "2026-06-15T14:10:00.0000000+00:00"
     },
     {
@@ -1203,15 +1203,15 @@
       "direction": "LONG?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 0.52,
-      "range": 0.37,
+      "natr": 0.51,
+      "range": 0.2,
       "impulse": 1.93,
       "displacement": 1.93,
       "volumeX": 3.37,
       "width": 1.24,
       "breakoutTime": "",
       "entryTime": "",
-      "heat": 0.52,
+      "heat": 0.51,
       "candles": [
         {
           "t": 1781511300000,
@@ -1786,11 +1786,11 @@
           "o": 1807.52,
           "h": 1810.44,
           "l": 1804.02,
-          "c": 1810.0,
-          "v": 23336.031
+          "c": 1809.79,
+          "v": 25823.484
         }
       ],
-      "lastPrice": 1810.0,
+      "lastPrice": 1809.79,
       "lastCandleTime": "2026-06-15T14:10:00.0000000+00:00"
     }
   ]
