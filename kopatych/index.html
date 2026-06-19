@@ -40,6 +40,31 @@
       font-size: 24px;
       letter-spacing: 0;
     }
+    .head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 11px;
+    }
+    .head h1 { margin: 0; }
+    .notify {
+      flex: 0 0 auto;
+      min-height: 32px;
+      border: 1px solid rgba(90, 167, 255, .48);
+      border-radius: 999px;
+      background: #101b25;
+      color: var(--text);
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .notify.on {
+      border-color: rgba(46, 229, 143, .58);
+      color: var(--green);
+    }
     .summary {
       display: flex;
       flex-wrap: wrap;
@@ -71,6 +96,10 @@
     }
     .card.normal { border-color: rgba(46, 229, 143, .45); }
     .card.aggressive { border-color: rgba(246, 191, 83, .5); }
+    .card.new-card {
+      border-color: rgba(90, 167, 255, .82);
+      box-shadow: 0 0 0 1px rgba(90, 167, 255, .36), 0 0 30px rgba(90, 167, 255, .16);
+    }
     .chart {
       height: 112px;
       position: relative;
@@ -180,6 +209,7 @@
     }
     @media (max-width: 720px) {
       header, main, footer { padding-left: 12px; padding-right: 12px; }
+      .head { align-items: flex-start; flex-direction: column; }
       .grid { grid-template-columns: 1fr; }
       .metrics { grid-template-columns: repeat(2, 1fr); }
     }
@@ -187,7 +217,10 @@
 </head>
 <body>
   <header>
-    <h1>Kopatych Crypto Filters</h1>
+    <div class="head">
+      <h1>Kopatych Crypto Filters</h1>
+      <button class="notify" id="notifyButton" type="button">Уведомления</button>
+    </div>
     <div class="summary" id="summary"><div class="pill">Загрузка data.json...</div></div>
   </header>
   <main><section class="grid" id="grid"></section></main>
@@ -196,6 +229,11 @@
   <script>
     const summary = document.getElementById("summary");
     const grid = document.getElementById("grid");
+    const notifyButton = document.getElementById("notifyButton");
+    const storageKey = "kopatych-known-symbols-v1";
+    const notifyKey = "kopatych-notify-enabled-v1";
+    let audioContext = null;
+    let lastNewSymbols = [];
     const dataSources = [
       { type: "json", url: "data.json" },
       { type: "json", url: "https://raw.githubusercontent.com/dol19sit87-cell/crypto-queue-screener/main/kopatych/data.json" }
@@ -237,17 +275,105 @@
       ].map((x) => `<div class="pill">${x}</div>`).join("");
     }
 
-    function renderCards(cards) {
+    function readKnownSymbols() {
+      try {
+        const raw = localStorage.getItem(storageKey);
+        const values = raw ? JSON.parse(raw) : [];
+        return new Set(Array.isArray(values) ? values : []);
+      } catch {
+        return new Set();
+      }
+    }
+
+    function saveKnownSymbols(symbols) {
+      localStorage.setItem(storageKey, JSON.stringify([...symbols].sort()));
+    }
+
+    function notificationsEnabled() {
+      return localStorage.getItem(notifyKey) === "1";
+    }
+
+    function updateNotifyButton() {
+      const enabled = notificationsEnabled();
+      notifyButton.classList.toggle("on", enabled);
+      if (!("Notification" in window)) {
+        notifyButton.textContent = "Без уведомлений";
+        notifyButton.disabled = true;
+        return;
+      }
+      if (enabled && Notification.permission === "granted") {
+        notifyButton.textContent = "Уведомления ON";
+      } else if (Notification.permission === "denied") {
+        notifyButton.textContent = "Запрещены в браузере";
+      } else {
+        notifyButton.textContent = "Включить сигнал";
+      }
+    }
+
+    function ensureAudio() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioContext.state === "suspended") audioContext.resume();
+    }
+
+    function playSignal() {
+      try {
+        ensureAudio();
+        const now = audioContext.currentTime;
+        [880, 1175].forEach((freq, i) => {
+          const osc = audioContext.createOscillator();
+          const gain = audioContext.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, now + i * .16);
+          gain.gain.setValueAtTime(0.001, now + i * .16);
+          gain.gain.exponentialRampToValueAtTime(0.18, now + i * .16 + .02);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * .16 + .14);
+          osc.connect(gain);
+          gain.connect(audioContext.destination);
+          osc.start(now + i * .16);
+          osc.stop(now + i * .16 + .15);
+        });
+      } catch {}
+    }
+
+    function notifyNewSymbols(newCards) {
+      if (!newCards.length || !notificationsEnabled()) return;
+      playSignal();
+      const symbols = newCards.map((card) => card.symbol).filter(Boolean);
+      document.title = `NEW: ${symbols.join(", ")}`;
+      setTimeout(() => { document.title = "Kopatych Crypto Filters"; }, 12000);
+      if ("Notification" in window && Notification.permission === "granted") {
+        const body = newCards.map((card) => {
+          const filters = Array.isArray(card.filters) ? card.filters.join("+") : card.primaryFilter;
+          return `${card.symbol} - ${filters}`;
+        }).join("\n");
+        new Notification("Новый тикер в Kopatych Filters", { body });
+      }
+    }
+
+    function getNewCards(cards) {
+      const symbols = new Set(cards.map((card) => card.symbol).filter(Boolean));
+      const known = readKnownSymbols();
+      const hasHistory = known.size > 0;
+      const newCards = hasHistory ? cards.filter((card) => card.symbol && !known.has(card.symbol)) : [];
+      saveKnownSymbols(symbols);
+      return newCards;
+    }
+
+    function renderCards(cards, newSymbols = []) {
       if (!cards.length) {
         grid.innerHTML = `<div class="empty">Сейчас нет тикеров, которые проходят Normal или Aggressive фильтр.</div>`;
         return;
       }
+      const fresh = new Set(newSymbols);
       grid.innerHTML = cards.map((card, index) => {
         const primary = (card.filters || [])[0] || "WATCH";
         const cls = primary === "Normal" ? "normal" : "aggressive";
+        const freshCls = fresh.has(card.symbol) ? " new-card" : "";
         const badges = (card.filters || []).map((f) => `<span class="filter ${f.toLowerCase()}">${f}</span>`).join("");
         return `
-          <article class="card ${cls}" data-index="${index}">
+          <article class="card ${cls}${freshCls}" data-index="${index}">
             <div class="chart">
               <canvas width="620" height="224"></canvas>
               <div class="ghost">${card.symbol ?? ""}</div>
@@ -346,16 +472,32 @@
         }
         if (!data) throw lastError || new Error("data.json unavailable");
         const cards = Array.isArray(data.cards) ? data.cards : [];
+        const newCards = getNewCards(cards);
+        lastNewSymbols = newCards.map((card) => card.symbol).filter(Boolean);
         renderSummary(data);
-        renderCards(cards);
+        renderCards(cards, lastNewSymbols);
         drawAll(cards);
+        notifyNewSymbols(newCards);
       } catch (error) {
         summary.innerHTML = `<div class="pill">Ошибка data.json</div>`;
         grid.innerHTML = `<div class="empty">${error.message}</div>`;
       }
     }
 
+    notifyButton.addEventListener("click", async () => {
+      ensureAudio();
+      if ("Notification" in window && Notification.permission === "default") {
+        await Notification.requestPermission();
+      }
+      if (!("Notification" in window) || Notification.permission === "granted") {
+        localStorage.setItem(notifyKey, "1");
+        playSignal();
+      }
+      updateNotifyButton();
+    });
+
     window.addEventListener("resize", load);
+    updateNotifyButton();
     load();
     setInterval(load, 60_000);
   </script>
