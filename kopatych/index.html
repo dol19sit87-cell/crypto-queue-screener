@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-store">
+  <title>Kopatych Crypto Filters</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080d11;
+      --panel: #101820;
+      --panel2: #0d1319;
+      --line: #22303b;
+      --text: #eef5f7;
+      --muted: #91a0aa;
+      --green: #2ee58f;
+      --amber: #f6bf53;
+      --red: #ff5c72;
+      --blue: #5aa7ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      padding: 18px 22px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(8, 13, 17, .95);
+    }
+    h1 {
+      margin: 0 0 11px;
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+    .summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .pill {
+      min-height: 30px;
+      border: 1px solid var(--line);
+      background: #111a22;
+      border-radius: 999px;
+      padding: 7px 10px;
+      white-space: nowrap;
+    }
+    main { padding: 16px 22px 28px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      min-height: 238px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(180deg, var(--panel), var(--panel2));
+      overflow: hidden;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .2);
+    }
+    .card.normal { border-color: rgba(46, 229, 143, .45); }
+    .card.aggressive { border-color: rgba(246, 191, 83, .5); }
+    .chart {
+      height: 112px;
+      position: relative;
+      border-bottom: 1px solid #1b2730;
+      background:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 100% 25%, 16.6% 100%;
+    }
+    canvas { display: block; width: 100%; height: 100%; }
+    .ghost {
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      max-width: calc(100% - 96px);
+      color: rgba(238, 245, 247, .13);
+      font-size: 34px;
+      line-height: 1;
+      font-weight: 850;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      pointer-events: none;
+    }
+    .price {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      padding: 5px 8px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: rgba(8, 12, 16, .72);
+      font-size: 12px;
+      font-weight: 780;
+    }
+    .body { padding: 12px 13px 13px; }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    h2 {
+      margin: 0;
+      font-size: 23px;
+      line-height: 1;
+    }
+    .filter {
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 8px;
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .filter.normal { border-color: rgba(46, 229, 143, .58); color: var(--green); }
+    .filter.aggressive { border-color: rgba(246, 191, 83, .62); color: var(--amber); }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      margin-top: 10px;
+    }
+    .metric {
+      min-width: 0;
+      border: 1px solid #1b2730;
+      border-radius: 6px;
+      background: rgba(255,255,255,.025);
+      padding: 7px;
+    }
+    .label {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.1;
+    }
+    .value {
+      display: block;
+      overflow-wrap: anywhere;
+      font-size: 12px;
+      font-weight: 780;
+      line-height: 1.15;
+    }
+    .empty {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--muted);
+      padding: 24px;
+    }
+    footer {
+      padding: 0 22px 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    @media (max-width: 720px) {
+      header, main, footer { padding-left: 12px; padding-right: 12px; }
+      .grid { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Kopatych Crypto Filters</h1>
+    <div class="summary" id="summary"><div class="pill">Загрузка data.json...</div></div>
+  </header>
+  <main><section class="grid" id="grid"></section></main>
+  <footer>Отбор только по двум фильтрам: Normal и Aggressive. Если тикер перестал соответствовать, при следующем обновлении он исчезает.</footer>
+
+  <script>
+    const summary = document.getElementById("summary");
+    const grid = document.getElementById("grid");
+    const dataSources = [
+      { type: "json", url: "data.json" },
+      { type: "json", url: "https://raw.githubusercontent.com/dol19sit87-cell/crypto-queue-screener/main/kopatych/data.json" }
+    ];
+
+    const fmt = (value, digits = 2) => {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return "-";
+      return n.toFixed(digits);
+    };
+
+    const compactPrice = (value) => {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return "-";
+      if (n >= 100) return n.toFixed(2);
+      if (n >= 1) return n.toFixed(4);
+      if (n >= 0.01) return n.toFixed(5);
+      return n.toPrecision(4);
+    };
+
+    const shortTime = (value) => {
+      if (!value) return "-";
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return String(value);
+      return d.toLocaleString("ru-RU", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+    };
+
+    function metric(label, value) {
+      return `<div class="metric"><span class="label">${label}</span><span class="value">${value}</span></div>`;
+    }
+
+    function renderSummary(data) {
+      summary.innerHTML = [
+        `Data: ${shortTime(data.updatedAt)}`,
+        `Symbols: ${data.cards?.length ?? 0}`,
+        `Normal: ${data.normalCount ?? 0}`,
+        `Aggressive: ${data.aggressiveCount ?? 0}`,
+        `Refresh: ${data.refreshMinutes ?? 5}m`
+      ].map((x) => `<div class="pill">${x}</div>`).join("");
+    }
+
+    function renderCards(cards) {
+      if (!cards.length) {
+        grid.innerHTML = `<div class="empty">Сейчас нет тикеров, которые проходят Normal или Aggressive фильтр.</div>`;
+        return;
+      }
+      grid.innerHTML = cards.map((card, index) => {
+        const primary = (card.filters || [])[0] || "WATCH";
+        const cls = primary === "Normal" ? "normal" : "aggressive";
+        const badges = (card.filters || []).map((f) => `<span class="filter ${f.toLowerCase()}">${f}</span>`).join("");
+        return `
+          <article class="card ${cls}" data-index="${index}">
+            <div class="chart">
+              <canvas width="620" height="224"></canvas>
+              <div class="ghost">${card.symbol ?? ""}</div>
+              <div class="price">${compactPrice(card.lastPrice)}</div>
+            </div>
+            <div class="body">
+              <div class="top">
+                <div>
+                  <h2>${card.symbol ?? "-"}</h2>
+                  <div class="filters">${badges}</div>
+                </div>
+              </div>
+              <div class="metrics">
+                ${metric("Vol 24h", `${fmt(card.volume24hM, 1)}M`)}
+                ${metric("Trades 15m", fmt(card.trades15m, 0))}
+                ${metric("NATR", `${fmt(card.natr5m14)}%`)}
+                ${metric("Range M5", `${fmt(card.range5m)}%`)}
+                ${metric("24h Change", `${fmt(card.change24h)}%`)}
+                ${metric("Candle", shortTime(card.lastCandleTime))}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function drawChart(canvas, card) {
+      const candles = Array.isArray(card.candles) ? card.candles : [];
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      if (!candles.length) return;
+      const pad = { left: 16, right: 18, top: 14, bottom: 30 };
+      const lows = candles.map((c) => Number(c.l));
+      const highs = candles.map((c) => Number(c.h));
+      const vols = candles.map((c) => Number(c.v));
+      let min = Math.min(...lows);
+      let max = Math.max(...highs);
+      const spread = max - min || max * .01 || 1;
+      min -= spread * .08;
+      max += spread * .08;
+      const maxVol = Math.max(...vols, 1);
+      const plotH = h - pad.top - pad.bottom;
+      const step = (w - pad.left - pad.right) / candles.length;
+      const bodyW = Math.max(3, Math.min(8, step * .58));
+      const y = (p) => pad.top + ((max - p) / (max - min)) * plotH;
+      const volTop = h - 24;
+      candles.forEach((c, i) => {
+        const x = pad.left + (i + .5) * step;
+        const o = Number(c.o), hi = Number(c.h), lo = Number(c.l), cl = Number(c.c), v = Number(c.v);
+        const up = cl >= o;
+        const color = up ? "#2ee58f" : "#ff5c72";
+        ctx.fillStyle = up ? "rgba(46,229,143,.20)" : "rgba(255,92,114,.20)";
+        const vh = (v / maxVol) * 20;
+        ctx.fillRect(x - bodyW / 2, volTop + 20 - vh, bodyW, vh);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(x, y(hi));
+        ctx.lineTo(x, y(lo));
+        ctx.stroke();
+        const top = y(Math.max(o, cl));
+        const bottom = y(Math.min(o, cl));
+        ctx.fillStyle = color;
+        ctx.fillRect(x - bodyW / 2, top, bodyW, Math.max(2, bottom - top));
+      });
+    }
+
+    function drawAll(cards) {
+      document.querySelectorAll(".card").forEach((tile) => {
+        const index = Number(tile.dataset.index);
+        drawChart(tile.querySelector("canvas"), cards[index]);
+      });
+    }
+
+    async function fetchJson(source, stamp) {
+      const join = source.url.includes("?") ? "&" : "?";
+      const r = await fetch(`${source.url}${join}t=${stamp}`, { cache: "no-store" });
+      if (!r.ok) throw new Error(`${source.url} HTTP ${r.status}`);
+      return r.json();
+    }
+
+    async function load() {
+      try {
+        const stamp = Date.now();
+        let data = null;
+        let lastError = null;
+        for (const source of dataSources) {
+          try {
+            data = await fetchJson(source, stamp);
+            break;
+          } catch (error) {
+            lastError = error;
+          }
+        }
+        if (!data) throw lastError || new Error("data.json unavailable");
+        const cards = Array.isArray(data.cards) ? data.cards : [];
+        renderSummary(data);
+        renderCards(cards);
+        drawAll(cards);
+      } catch (error) {
+        summary.innerHTML = `<div class="pill">Ошибка data.json</div>`;
+        grid.innerHTML = `<div class="empty">${error.message}</div>`;
+      }
+    }
+
+    window.addEventListener("resize", load);
+    load();
+    setInterval(load, 60_000);
+  </script>
+</body>
+</html>
