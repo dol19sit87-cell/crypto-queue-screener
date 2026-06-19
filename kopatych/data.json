@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-19T18:28:14.2642490Z",
+  "updatedAt": "2026-06-19T18:29:56.3998520Z",
   "refreshMinutes": 1.0,
   "filters": {
     "normal": {
@@ -22,13 +22,13 @@
         "Normal"
       ],
       "primaryFilter": "Normal",
-      "volume24h": 139282714.27066,
-      "volume24hM": 139.3,
-      "trades15m": 47968.0,
-      "natr5m14": 4.03,
-      "range5m": 3.34,
-      "change24h": -26.22,
-      "lastPrice": 0.38925,
+      "volume24h": 139867539.11635,
+      "volume24hM": 139.9,
+      "trades15m": 48086.0,
+      "natr5m14": 4.05,
+      "range5m": 3.61,
+      "change24h": -25.93,
+      "lastPrice": 0.3886,
       "lastCandleTime": "2026-06-19T18:25:00.0000000+00:00",
       "candles": [
         {
@@ -602,13 +602,13 @@
         {
           "t": 1781893500000,
           "o": 0.37918,
-          "h": 0.39,
+          "h": 0.391,
           "l": 0.37698,
-          "c": 0.38925,
-          "v": 3590025.0
+          "c": 0.3886,
+          "v": 5403189.0
         }
       ],
-      "score": 5.6565
+      "score": 5.6756
     },
     {
       "symbol": "REUSDT",
@@ -616,13 +616,13 @@
         "Normal"
       ],
       "primaryFilter": "Normal",
-      "volume24h": 1154033915.6744,
-      "volume24hM": 1154.0,
-      "trades15m": 116575.0,
+      "volume24h": 1153663335.0107,
+      "volume24hM": 1153.7,
+      "trades15m": 116542.0,
       "natr5m14": 2.36,
-      "range5m": 1.58,
-      "change24h": 44.82,
-      "lastPrice": 0.7468,
+      "range5m": 1.57,
+      "change24h": 46.36,
+      "lastPrice": 0.7505,
       "lastCandleTime": "2026-06-19T18:25:00.0000000+00:00",
       "candles": [
         {
@@ -1198,11 +1198,11 @@
           "o": 0.7429,
           "h": 0.7544,
           "l": 0.7426,
-          "c": 0.7468,
-          "v": 1743347.0
+          "c": 0.7505,
+          "v": 2313134.0
         }
       ],
-      "score": 4.168
+      "score": 4.1674
     },
     {
       "symbol": "BEATUSDT",
@@ -1210,13 +1210,13 @@
         "Normal"
       ],
       "primaryFilter": "Normal",
-      "volume24h": 225967035.1576,
-      "volume24hM": 226.0,
-      "trades15m": 26073.0,
+      "volume24h": 225917094.4834,
+      "volume24hM": 225.9,
+      "trades15m": 26067.0,
       "natr5m14": 1.97,
       "range5m": 1.3,
-      "change24h": 5.36,
-      "lastPrice": 1.848,
+      "change24h": 3.73,
+      "lastPrice": 1.843,
       "lastCandleTime": "2026-06-19T18:25:00.0000000+00:00",
       "candles": [
         {
@@ -1792,11 +1792,11 @@
           "o": 1.831,
           "h": 1.855,
           "l": 1.831,
-          "c": 1.848,
-          "v": 51190.0
+          "c": 1.843,
+          "v": 79675.0
         }
       ],
-      "score": 3.6369
+      "score": 3.6371
     },
     {
       "symbol": "BTWUSDT",
@@ -1804,13 +1804,13 @@
         "Normal"
       ],
       "primaryFilter": "Normal",
-      "volume24h": 111522696.454147,
-      "volume24hM": 111.5,
-      "trades15m": 25437.0,
-      "natr5m14": 2.01,
-      "range5m": 0.64,
-      "change24h": 66.75,
-      "lastPrice": 0.08007,
+      "volume24h": 111604797.702927,
+      "volume24hM": 111.6,
+      "trades15m": 25453.0,
+      "natr5m14": 2.03,
+      "range5m": 0.78,
+      "change24h": 66.08,
+      "lastPrice": 0.08041,
       "lastCandleTime": "2026-06-19T18:25:00.0000000+00:00",
       "candles": [
         {
@@ -2384,13 +2384,13 @@
         {
           "t": 1781893500000,
           "o": 0.07999,
-          "h": 0.0805,
+          "h": 0.08062,
           "l": 0.07999,
-          "c": 0.08007,
-          "v": 2896829.0
+          "c": 0.08041,
+          "v": 4494306.0
         }
       ],
-      "score": 3.624
+      "score": 3.6346
     },
     {
       "symbol": "HEIUSDT",
@@ -2398,13 +2398,13 @@
         "Normal"
       ],
       "primaryFilter": "Normal",
-      "volume24h": 217975396.948386,
-      "volume24hM": 218.0,
-      "trades15m": 52398.0,
+      "volume24h": 217774030.252541,
+      "volume24hM": 217.8,
+      "trades15m": 52363.0,
       "natr5m14": 1.94,
-      "range5m": 1.03,
-      "change24h": 29.76,
-      "lastPrice": 0.12013,
+      "range5m": 1.06,
+      "change24h": 30.64,
+      "lastPrice": 0.12126,
       "lastCandleTime": "2026-06-19T18:25:00.0000000+00:00",
       "candles": [
         {
@@ -2978,13 +2978,13 @@
         {
           "t": 1781893500000,
           "o": 0.12099,
-          "h": 0.12131,
+          "h": 0.12135,
           "l": 0.12007,
-          "c": 0.12013,
-          "v": 835078.3
+          "c": 0.12126,
+          "v": 1240281.5
         }
       ],
-      "score": 3.6066
+      "score": 3.6082
     },
     {
       "symbol": "LABUSDT",
@@ -2992,13 +2992,13 @@
         "Normal"
       ],
       "primaryFilter": "Normal",
-      "volume24h": 397338068.3369,
-      "volume24hM": 397.3,
-      "trades15m": 43010.0,
-      "natr5m14": 1.77,
-      "range5m": 1.22,
+      "volume24h": 397744854.20853,
+      "volume24hM": 397.7,
+      "trades15m": 43037.0,
+      "natr5m14": 1.8,
+      "range5m": 1.61,
       "change24h": -21.19,
-      "lastPrice": 13.349,
+      "lastPrice": 13.315,
       "lastCandleTime": "2026-06-19T18:25:00.0000000+00:00",
       "candles": [
         {
@@ -3573,12 +3573,12 @@
           "t": 1781893500000,
           "o": 13.441,
           "h": 13.49,
-          "l": 13.327,
-          "c": 13.349,
-          "v": 71316.0
+          "l": 13.275,
+          "c": 13.315,
+          "v": 120553.0
         }
       ],
-      "score": 3.4889
+      "score": 3.5172
     },
     {
       "symbol": "SYNUSDT",
@@ -3586,13 +3586,13 @@
         "Normal"
       ],
       "primaryFilter": "Normal",
-      "volume24h": 324277160.45889,
-      "volume24hM": 324.3,
-      "trades15m": 45954.0,
+      "volume24h": 324217558.74984,
+      "volume24hM": 324.2,
+      "trades15m": 45948.0,
       "natr5m14": 1.78,
-      "range5m": 1.16,
-      "change24h": -0.11,
-      "lastPrice": 0.1228,
+      "range5m": 1.23,
+      "change24h": 0.48,
+      "lastPrice": 0.12254,
       "lastCandleTime": "2026-06-19T18:25:00.0000000+00:00",
       "candles": [
         {
@@ -4166,13 +4166,13 @@
         {
           "t": 1781893500000,
           "o": 0.12225,
-          "h": 0.12302,
+          "h": 0.12311,
           "l": 0.1216,
-          "c": 0.1228,
-          "v": 1786899.0
+          "c": 0.12254,
+          "v": 3066747.0
         }
       ],
-      "score": 3.4803
+      "score": 3.4857
     },
     {
       "symbol": "BASEDUSDT",
@@ -4180,12 +4180,12 @@
         "Normal"
       ],
       "primaryFilter": "Normal",
-      "volume24h": 113466489.72246,
-      "volume24hM": 113.5,
-      "trades15m": 21488.0,
+      "volume24h": 113409944.28971,
+      "volume24hM": 113.4,
+      "trades15m": 21478.0,
       "natr5m14": 1.56,
       "range5m": 1.04,
-      "change24h": 15.66,
+      "change24h": 15.06,
       "lastPrice": 0.09906,
       "lastCandleTime": "2026-06-19T18:25:00.0000000+00:00",
       "candles": [
@@ -4763,7 +4763,7 @@
           "h": 0.09929,
           "l": 0.09826,
           "c": 0.09906,
-          "v": 697740.0
+          "v": 1077192.0
         }
       ],
       "score": 3.1758
@@ -4774,13 +4774,13 @@
         "Normal"
       ],
       "primaryFilter": "Normal",
-      "volume24h": 240853072.48021,
-      "volume24hM": 240.9,
-      "trades15m": 37008.0,
-      "natr5m14": 1.11,
-      "range5m": 0.71,
-      "change24h": -15.15,
-      "lastPrice": 0.4618,
+      "volume24h": 240193676.5725,
+      "volume24hM": 240.2,
+      "trades15m": 36908.0,
+      "natr5m14": 1.13,
+      "range5m": 0.96,
+      "change24h": -16.08,
+      "lastPrice": 0.4604,
       "lastCandleTime": "2026-06-19T18:25:00.0000000+00:00",
       "candles": [
         {
@@ -5355,12 +5355,12 @@
           "t": 1781893500000,
           "o": 0.4604,
           "h": 0.4635,
-          "l": 0.4602,
-          "c": 0.4618,
-          "v": 122786.0
+          "l": 0.4591,
+          "c": 0.4604,
+          "v": 203812.0
         }
       ],
-      "score": 2.7908
+      "score": 2.8078
     },
     {
       "symbol": "ESPORTSUSDT",
@@ -5368,13 +5368,13 @@
         "Normal"
       ],
       "primaryFilter": "Normal",
-      "volume24h": 235098506.23912,
-      "volume24hM": 235.1,
-      "trades15m": 44670.0,
-      "natr5m14": 1.03,
+      "volume24h": 234834552.85631,
+      "volume24hM": 234.8,
+      "trades15m": 44557.0,
+      "natr5m14": 1.04,
       "range5m": 0.48,
-      "change24h": -49.47,
-      "lastPrice": 0.031,
+      "change24h": -49.72,
+      "lastPrice": 0.03096,
       "lastCandleTime": "2026-06-19T18:25:00.0000000+00:00",
       "candles": [
         {
@@ -5950,8 +5950,8 @@
           "o": 0.03095,
           "h": 0.031,
           "l": 0.03085,
-          "c": 0.031,
-          "v": 4616179.0
+          "c": 0.03096,
+          "v": 5650247.0
         }
       ],
       "score": 2.7092
