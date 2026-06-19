@@ -80,16 +80,16 @@
       padding: 7px 10px;
       white-space: nowrap;
     }
-    main { padding: 16px 22px 28px; }
+    main { padding: 12px 14px 24px; }
     .grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 18px;
-      max-width: 1360px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      max-width: none;
       margin: 0 auto;
     }
     .card {
-      min-height: 720px;
+      min-height: 0;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: linear-gradient(180deg, var(--panel), var(--panel2));
@@ -105,10 +105,10 @@
     .chart-stack {
       display: grid;
       grid-template-rows: 1fr 1fr;
-      min-height: 570px;
+      min-height: min(68vh, 620px);
     }
     .chart {
-      min-height: 285px;
+      min-height: min(34vh, 310px);
       position: relative;
       border-bottom: 1px solid #1b2730;
       background:
@@ -127,7 +127,7 @@
       border-radius: 6px;
       background: rgba(8, 12, 16, .74);
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 840;
       z-index: 1;
     }
@@ -137,7 +137,7 @@
       top: 44px;
       max-width: calc(100% - 96px);
       color: rgba(238, 245, 247, .13);
-      font-size: 34px;
+      font-size: 24px;
       line-height: 1;
       font-weight: 850;
       white-space: nowrap;
@@ -149,33 +149,33 @@
       position: absolute;
       right: 10px;
       top: 10px;
-      padding: 5px 8px;
+      padding: 4px 7px;
       border: 1px solid var(--line);
       border-radius: 6px;
       background: rgba(8, 12, 16, .72);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 780;
     }
-    .body { padding: 12px 13px 13px; }
+    .body { padding: 9px 10px 10px; }
     .top {
       display: flex;
       justify-content: space-between;
       gap: 10px;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 7px;
     }
     h2 {
       margin: 0;
-      font-size: 23px;
+      font-size: 18px;
       line-height: 1;
     }
     .filter {
       flex: 0 0 auto;
       border: 1px solid var(--line);
       border-radius: 999px;
-      padding: 6px 8px;
+      padding: 5px 7px;
       color: var(--text);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
       white-space: nowrap;
     }
@@ -185,34 +185,34 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 7px;
+      margin-top: 6px;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
     }
     .metrics {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 7px;
-      margin-top: 10px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      margin-top: 7px;
     }
     .metric {
       min-width: 0;
       border: 1px solid #1b2730;
       border-radius: 6px;
       background: rgba(255,255,255,.025);
-      padding: 7px;
+      padding: 5px;
     }
     .label {
       display: block;
       margin-bottom: 3px;
       color: var(--muted);
-      font-size: 10px;
+      font-size: 9px;
       line-height: 1.1;
     }
     .value {
       display: block;
       overflow-wrap: anywhere;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 780;
       line-height: 1.15;
     }
@@ -236,6 +236,11 @@
       .chart-stack { min-height: 450px; }
       .chart { min-height: 225px; }
       .metrics { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 721px) and (max-width: 1100px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .chart-stack { min-height: 560px; }
+      .chart { min-height: 280px; }
     }
   </style>
 </head>
