@@ -83,11 +83,13 @@
     main { padding: 16px 22px 28px; }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 12px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+      max-width: 1360px;
+      margin: 0 auto;
     }
     .card {
-      min-height: 238px;
+      min-height: 720px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: linear-gradient(180deg, var(--panel), var(--panel2));
@@ -100,8 +102,13 @@
       border-color: rgba(90, 167, 255, .82);
       box-shadow: 0 0 0 1px rgba(90, 167, 255, .36), 0 0 30px rgba(90, 167, 255, .16);
     }
+    .chart-stack {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      min-height: 570px;
+    }
     .chart {
-      height: 112px;
+      min-height: 285px;
       position: relative;
       border-bottom: 1px solid #1b2730;
       background:
@@ -109,11 +116,25 @@
         linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
       background-size: 100% 25%, 16.6% 100%;
     }
+    .chart:last-child { border-bottom: 0; }
     canvas { display: block; width: 100%; height: 100%; }
-    .ghost {
+    .timeframe {
       position: absolute;
       left: 12px;
       top: 10px;
+      padding: 5px 8px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: rgba(8, 12, 16, .74);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 840;
+      z-index: 1;
+    }
+    .ghost {
+      position: absolute;
+      left: 12px;
+      top: 44px;
       max-width: calc(100% - 96px);
       color: rgba(238, 245, 247, .13);
       font-size: 34px;
@@ -140,7 +161,7 @@
       display: flex;
       justify-content: space-between;
       gap: 10px;
-      align-items: flex-start;
+      align-items: center;
       margin-bottom: 10px;
     }
     h2 {
@@ -170,7 +191,7 @@
     }
     .metrics {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 7px;
       margin-top: 10px;
     }
@@ -211,6 +232,9 @@
       header, main, footer { padding-left: 12px; padding-right: 12px; }
       .head { align-items: flex-start; flex-direction: column; }
       .grid { grid-template-columns: 1fr; }
+      .card { min-height: 610px; }
+      .chart-stack { min-height: 450px; }
+      .chart { min-height: 225px; }
       .metrics { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
@@ -374,10 +398,17 @@
         const badges = (card.filters || []).map((f) => `<span class="filter ${f.toLowerCase()}">${f}</span>`).join("");
         return `
           <article class="card ${cls}${freshCls}" data-index="${index}">
-            <div class="chart">
-              <canvas width="620" height="224"></canvas>
-              <div class="ghost">${card.symbol ?? ""}</div>
-              <div class="price">${compactPrice(card.lastPrice)}</div>
+            <div class="chart-stack">
+              <div class="chart">
+                <canvas data-timeframe="h1" width="1380" height="570"></canvas>
+                <div class="timeframe">H1</div>
+                <div class="ghost">${card.symbol ?? ""}</div>
+                <div class="price">${compactPrice(card.lastPrice)}</div>
+              </div>
+              <div class="chart">
+                <canvas data-timeframe="m5" width="1380" height="570"></canvas>
+                <div class="timeframe">M5</div>
+              </div>
             </div>
             <div class="body">
               <div class="top">
@@ -400,8 +431,8 @@
       }).join("");
     }
 
-    function drawChart(canvas, card) {
-      const candles = Array.isArray(card.candles) ? card.candles : [];
+    function drawChart(canvas, candles) {
+      candles = Array.isArray(candles) ? candles : [];
       const ctx = canvas.getContext("2d");
       const w = canvas.width;
       const h = canvas.height;
@@ -446,7 +477,9 @@
     function drawAll(cards) {
       document.querySelectorAll(".card").forEach((tile) => {
         const index = Number(tile.dataset.index);
-        drawChart(tile.querySelector("canvas"), cards[index]);
+        const card = cards[index] || {};
+        drawChart(tile.querySelector('canvas[data-timeframe="h1"]'), card.candles1h);
+        drawChart(tile.querySelector('canvas[data-timeframe="m5"]'), card.candles5m || card.candles);
       });
     }
 
