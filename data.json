@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-06-23T19:11:07.4748810Z",
-  "stateUpdatedAt": "2026-06-23T19:07:54.997884Z",
+  "updatedAt": "2026-06-23T19:12:13.5915370Z",
+  "stateUpdatedAt": "2026-06-23T19:11:45.825486Z",
   "watchlistCount": 1,
   "setupCount": 0,
   "openTradeCount": 0,
@@ -12,15 +12,15 @@
       "direction": "LONG?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 3.4,
-      "range": 0.75,
+      "natr": 3.53,
+      "range": 2.66,
       "impulse": 6.41,
       "displacement": 6.41,
       "volumeX": 18.86,
       "width": 5.23,
       "breakoutTime": "",
       "entryTime": "",
-      "heat": 3.4,
+      "heat": 3.53,
       "candles": [
         {
           "t": 1782220500000,
@@ -594,12 +594,12 @@
           "t": 1782241800000,
           "o": 0.12844,
           "h": 0.1291,
-          "l": 0.12633,
-          "c": 0.12677,
-          "v": 3755914.2
+          "l": 0.12354,
+          "c": 0.12667,
+          "v": 12571134.1
         }
       ],
-      "lastPrice": 0.12677,
+      "lastPrice": 0.12667,
       "lastCandleTime": "2026-06-23T19:10:00.0000000+00:00"
     }
   ]
