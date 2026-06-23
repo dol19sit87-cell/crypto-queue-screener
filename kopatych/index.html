@@ -259,6 +259,7 @@
     let audioContext = null;
     let lastNewSymbols = [];
     const dataSources = [
+      { type: "github-api", url: "https://api.github.com/repos/dol19sit87-cell/crypto-queue-screener/contents/kopatych/data.json?ref=main" },
       { type: "json", url: "https://raw.githubusercontent.com/dol19sit87-cell/crypto-queue-screener/main/kopatych/data.json" },
       { type: "json", url: "data.json" }
     ];
@@ -487,6 +488,13 @@
       const join = source.url.includes("?") ? "&" : "?";
       const r = await fetch(`${source.url}${join}t=${stamp}`, { cache: "no-store" });
       if (!r.ok) throw new Error(`${source.url} HTTP ${r.status}`);
+      if (source.type === "github-api") {
+        const payload = await r.json();
+        const clean = String(payload.content || "").replace(/\s/g, "");
+        const binary = atob(clean);
+        const bytes = Uint8Array.from(binary, (ch) => ch.charCodeAt(0));
+        return JSON.parse(new TextDecoder("utf-8").decode(bytes));
+      }
       return r.json();
     }
 
