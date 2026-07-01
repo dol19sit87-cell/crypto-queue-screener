@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-07-01T20:45:05.6884320Z",
-  "stateUpdatedAt": "2026-07-01T20:41:56.743204Z",
+  "updatedAt": "2026-07-01T20:46:21.8666430Z",
+  "stateUpdatedAt": "2026-07-01T20:45:10.696598Z",
   "watchlistCount": 2,
   "setupCount": 0,
   "openTradeCount": 0,
@@ -12,15 +12,15 @@
       "direction": "SHORT?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 1.84,
-      "range": 2.44,
+      "natr": 1.95,
+      "range": 2.57,
       "impulse": 2.62,
       "displacement": 2.62,
       "volumeX": 1.74,
       "width": 1.21,
       "breakoutTime": "",
       "entryTime": "",
-      "heat": 2.44,
+      "heat": 2.57,
       "candles": [
         {
           "t": 1782917400000,
@@ -593,13 +593,13 @@
         {
           "t": 1782938700000,
           "o": 0.44833,
-          "h": 0.44873,
-          "l": 0.44803,
-          "c": 0.44808,
-          "v": 19914.0
+          "h": 0.44916,
+          "l": 0.44336,
+          "c": 0.44588,
+          "v": 438775.0
         }
       ],
-      "lastPrice": 0.44808,
+      "lastPrice": 0.44588,
       "lastCandleTime": "2026-07-01T20:45:00.0000000+00:00"
     },
     {
@@ -608,15 +608,15 @@
       "direction": "SHORT?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 0.63,
-      "range": 0.4,
+      "natr": 0.62,
+      "range": 0.39,
       "impulse": 1.82,
       "displacement": 1.82,
       "volumeX": 1.13,
       "width": 1.15,
       "breakoutTime": "",
       "entryTime": "",
-      "heat": 0.63,
+      "heat": 0.62,
       "candles": [
         {
           "t": 1782917400000,
@@ -1189,13 +1189,13 @@
         {
           "t": 1782938700000,
           "o": 0.5953,
-          "h": 0.5957,
-          "l": 0.5953,
-          "c": 0.5957,
-          "v": 6199.0
+          "h": 0.5959,
+          "l": 0.5946,
+          "c": 0.595,
+          "v": 88841.0
         }
       ],
-      "lastPrice": 0.5957,
+      "lastPrice": 0.595,
       "lastCandleTime": "2026-07-01T20:45:00.0000000+00:00"
     }
   ]
