@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-07-01T20:57:21.5921080Z",
-  "stateUpdatedAt": "2026-07-01T20:53:51.009393Z",
+  "updatedAt": "2026-07-01T20:58:46.2765390Z",
+  "stateUpdatedAt": "2026-07-01T20:58:08.044061Z",
   "watchlistCount": 2,
   "setupCount": 0,
   "openTradeCount": 0,
@@ -12,15 +12,15 @@
       "direction": "SHORT?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 2.14,
-      "range": 1.54,
+      "natr": 2.16,
+      "range": 1.73,
       "impulse": 2.62,
       "displacement": 2.62,
       "volumeX": 1.74,
       "width": 1.21,
       "breakoutTime": "",
       "entryTime": "",
-      "heat": 2.14,
+      "heat": 2.16,
       "candles": [
         {
           "t": 1782918000000,
@@ -593,13 +593,13 @@
         {
           "t": 1782939300000,
           "o": 0.46158,
-          "h": 0.46251,
-          "l": 0.45418,
-          "c": 0.45442,
-          "v": 346897.0
+          "h": 0.46684,
+          "l": 0.45416,
+          "c": 0.46154,
+          "v": 1071069.0
         }
       ],
-      "lastPrice": 0.45442,
+      "lastPrice": 0.46154,
       "lastCandleTime": "2026-07-01T20:55:00.0000000+00:00"
     },
     {
@@ -608,15 +608,15 @@
       "direction": "SHORT?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 0.58,
-      "range": 0.27,
+      "natr": 0.55,
+      "range": 0.08,
       "impulse": 1.82,
       "displacement": 1.82,
       "volumeX": 1.13,
       "width": 1.15,
       "breakoutTime": "",
       "entryTime": "",
-      "heat": 0.58,
+      "heat": 0.55,
       "candles": [
         {
           "t": 1782918000000,
@@ -1189,13 +1189,13 @@
         {
           "t": 1782939300000,
           "o": 0.5969,
-          "h": 0.5981,
+          "h": 0.599,
           "l": 0.5965,
-          "c": 0.5977,
-          "v": 107447.0
+          "c": 0.5985,
+          "v": 169337.0
         }
       ],
-      "lastPrice": 0.5977,
+      "lastPrice": 0.5985,
       "lastCandleTime": "2026-07-01T20:55:00.0000000+00:00"
     }
   ]
