@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-07-03T18:38:22.0045840Z",
-  "stateUpdatedAt": "2026-07-03T18:35:42.520459Z",
+  "updatedAt": "2026-07-03T18:39:26.3256140Z",
+  "stateUpdatedAt": "2026-07-03T18:39:17.629039Z",
   "watchlistCount": 3,
   "setupCount": 0,
   "openTradeCount": 0,
@@ -12,15 +12,15 @@
       "direction": "LONG?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 7.75,
-      "range": 5.36,
+      "natr": 7.93,
+      "range": 12.06,
       "impulse": 15.57,
       "displacement": 15.57,
       "volumeX": 65.63,
       "width": 15.97,
       "breakoutTime": "",
       "entryTime": "",
-      "heat": 7.75,
+      "heat": 12.06,
       "candles": [
         {
           "t": 1783082400000,
@@ -595,11 +595,11 @@
           "o": 0.09154,
           "h": 0.1,
           "l": 0.08751,
-          "c": 0.09813,
-          "v": 21765049.0
+          "c": 0.09832,
+          "v": 28374542.0
         }
       ],
-      "lastPrice": 0.09813,
+      "lastPrice": 0.09832,
       "lastCandleTime": "2026-07-03T18:35:00.0000000+00:00"
     },
     {
@@ -609,7 +609,7 @@
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
       "natr": 0.91,
-      "range": 0.74,
+      "range": 0.34,
       "impulse": 1.77,
       "displacement": 1.77,
       "volumeX": 1.24,
@@ -1190,12 +1190,12 @@
           "t": 1783103700000,
           "o": 0.03017,
           "h": 0.030193,
-          "l": 0.03009,
-          "c": 0.030122,
-          "v": 585416.0
+          "l": 0.030059,
+          "c": 0.030061,
+          "v": 736430.0
         }
       ],
-      "lastPrice": 0.030122,
+      "lastPrice": 0.030061,
       "lastCandleTime": "2026-07-03T18:35:00.0000000+00:00"
     },
     {
@@ -1205,7 +1205,7 @@
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
       "natr": 0.8,
-      "range": 0.33,
+      "range": 0.31,
       "impulse": 2.01,
       "displacement": 2.01,
       "volumeX": 16.57,
@@ -1785,10 +1785,10 @@
         {
           "t": 1783103700000,
           "o": 0.05132,
-          "h": 0.05146,
+          "h": 0.0515,
           "l": 0.05113,
           "c": 0.05137,
-          "v": 527147.0
+          "v": 656923.0
         }
       ],
       "lastPrice": 0.05137,
