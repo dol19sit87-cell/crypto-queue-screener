@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-07-03T19:20:23.0798490Z",
-  "stateUpdatedAt": "2026-07-03T19:14:55.813022Z",
+  "updatedAt": "2026-07-03T19:21:26.5461900Z",
+  "stateUpdatedAt": "2026-07-03T19:21:10.108153Z",
   "watchlistCount": 2,
   "setupCount": 0,
   "openTradeCount": 0,
@@ -12,15 +12,15 @@
       "direction": "LONG?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 7.87,
-      "range": 2.95,
+      "natr": 8.27,
+      "range": 10.46,
       "impulse": 15.57,
       "displacement": 15.57,
       "volumeX": 65.63,
       "width": 15.97,
       "breakoutTime": "",
       "entryTime": "",
-      "heat": 7.87,
+      "heat": 10.46,
       "candles": [
         {
           "t": 1783085100000,
@@ -593,13 +593,13 @@
         {
           "t": 1783106400000,
           "o": 0.08862,
-          "h": 0.08914,
+          "h": 0.09028,
           "l": 0.08839,
-          "c": 0.089,
-          "v": 375349.0
+          "c": 0.09007,
+          "v": 1530263.0
         }
       ],
-      "lastPrice": 0.089,
+      "lastPrice": 0.09007,
       "lastCandleTime": "2026-07-03T19:20:00.0000000+00:00"
     },
     {
@@ -608,15 +608,15 @@
       "direction": "SHORT?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 0.72,
-      "range": 0.38,
+      "natr": 0.64,
+      "range": 0.24,
       "impulse": 1.77,
       "displacement": 1.77,
       "volumeX": 1.24,
       "width": 0.93,
       "breakoutTime": "",
       "entryTime": "",
-      "heat": 0.72,
+      "heat": 0.64,
       "candles": [
         {
           "t": 1783085100000,
@@ -1190,12 +1190,12 @@
           "t": 1783106400000,
           "o": 0.030104,
           "h": 0.030104,
-          "l": 0.030012,
-          "c": 0.03006,
-          "v": 171353.0
+          "l": 0.029996,
+          "c": 0.030014,
+          "v": 359967.0
         }
       ],
-      "lastPrice": 0.03006,
+      "lastPrice": 0.030014,
       "lastCandleTime": "2026-07-03T19:20:00.0000000+00:00"
     }
   ]
