@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-07-03T19:03:05.8868320Z",
-  "stateUpdatedAt": "2026-07-03T18:57:33.133738Z",
+  "updatedAt": "2026-07-03T19:04:43.4949580Z",
+  "stateUpdatedAt": "2026-07-03T19:03:32.593375Z",
   "watchlistCount": 2,
   "setupCount": 0,
   "openTradeCount": 0,
@@ -12,15 +12,15 @@
       "direction": "LONG?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 8.76,
-      "range": 1.21,
+      "natr": 8.96,
+      "range": 4.1,
       "impulse": 15.57,
       "displacement": 15.57,
       "volumeX": 65.63,
       "width": 15.97,
       "breakoutTime": "",
       "entryTime": "",
-      "heat": 8.76,
+      "heat": 8.96,
       "candles": [
         {
           "t": 1783083900000,
@@ -593,13 +593,13 @@
         {
           "t": 1783105200000,
           "o": 0.09086,
-          "h": 0.09299,
+          "h": 0.09316,
           "l": 0.09052,
-          "c": 0.09204,
-          "v": 4686029.0
+          "c": 0.09292,
+          "v": 6030774.0
         }
       ],
-      "lastPrice": 0.09204,
+      "lastPrice": 0.09292,
       "lastCandleTime": "2026-07-03T19:00:00.0000000+00:00"
     },
     {
@@ -608,15 +608,15 @@
       "direction": "SHORT?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 0.86,
-      "range": 0.24,
+      "natr": 0.87,
+      "range": 0.33,
       "impulse": 1.77,
       "displacement": 1.77,
       "volumeX": 1.24,
       "width": 0.93,
       "breakoutTime": "",
       "entryTime": "",
-      "heat": 0.86,
+      "heat": 0.87,
       "candles": [
         {
           "t": 1783083900000,
@@ -1189,13 +1189,13 @@
         {
           "t": 1783105200000,
           "o": 0.030044,
-          "h": 0.030129,
+          "h": 0.030163,
           "l": 0.03001,
-          "c": 0.030122,
-          "v": 754701.0
+          "c": 0.030081,
+          "v": 988786.0
         }
       ],
-      "lastPrice": 0.030122,
+      "lastPrice": 0.030081,
       "lastCandleTime": "2026-07-03T19:00:00.0000000+00:00"
     }
   ]
