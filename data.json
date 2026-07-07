@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-07-07T17:21:14.9127520Z",
-  "stateUpdatedAt": "2026-07-07T17:19:43.786843Z",
+  "updatedAt": "2026-07-07T17:22:23.8786540Z",
+  "stateUpdatedAt": "2026-07-07T17:22:17.732867Z",
   "watchlistCount": 3,
   "setupCount": 0,
   "openTradeCount": 0,
@@ -12,8 +12,8 @@
       "direction": "SHORT?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 7.24,
-      "range": 8.8,
+      "natr": 6.64,
+      "range": 1.83,
       "impulse": 83.13,
       "displacement": 83.13,
       "volumeX": 33.28,
@@ -593,13 +593,13 @@
         {
           "t": 1783444800000,
           "o": 0.005017,
-          "h": 0.005108,
+          "h": 0.00515,
           "l": 0.005014,
-          "c": 0.005074,
-          "v": 56196223.0
+          "c": 0.005071,
+          "v": 100186506.0
         }
       ],
-      "lastPrice": 0.005074,
+      "lastPrice": 0.005071,
       "lastCandleTime": "2026-07-07T17:20:00.0000000+00:00"
     },
     {
@@ -608,15 +608,15 @@
       "direction": "LONG?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 4.14,
-      "range": 2.75,
+      "natr": 3.71,
+      "range": 0.84,
       "impulse": 12.13,
       "displacement": 12.13,
       "volumeX": 45.96,
       "width": 8.55,
       "breakoutTime": "",
       "entryTime": "",
-      "heat": 4.14,
+      "heat": 3.71,
       "candles": [
         {
           "t": 1783423500000,
@@ -1189,13 +1189,13 @@
         {
           "t": 1783444800000,
           "o": 0.0001076,
-          "h": 0.0001081,
+          "h": 0.0001103,
           "l": 0.0001072,
-          "c": 0.0001078,
-          "v": 913037539.0
+          "c": 0.0001097,
+          "v": 3114860475.0
         }
       ],
-      "lastPrice": 0.0001078,
+      "lastPrice": 0.0001097,
       "lastCandleTime": "2026-07-07T17:20:00.0000000+00:00"
     },
     {
@@ -1204,8 +1204,8 @@
       "direction": "SHORT?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 2.35,
-      "range": 1.73,
+      "natr": 2.11,
+      "range": 0.51,
       "impulse": 11.17,
       "displacement": 11.17,
       "volumeX": 14.52,
@@ -1786,12 +1786,12 @@
           "t": 1783444800000,
           "o": 0.002735,
           "h": 0.002735,
-          "l": 0.00272,
-          "c": 0.002726,
-          "v": 32104466.0
+          "l": 0.002695,
+          "c": 0.002702,
+          "v": 54881259.0
         }
       ],
-      "lastPrice": 0.002726,
+      "lastPrice": 0.002702,
       "lastCandleTime": "2026-07-07T17:20:00.0000000+00:00"
     }
   ]
