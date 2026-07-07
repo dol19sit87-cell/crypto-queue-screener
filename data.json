@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-07-07T20:27:11.8926860Z",
-  "stateUpdatedAt": "2026-07-07T20:23:54.759902Z",
+  "updatedAt": "2026-07-07T20:28:15.8987040Z",
+  "stateUpdatedAt": "2026-07-07T20:28:02.595705Z",
   "watchlistCount": 2,
   "setupCount": 0,
   "openTradeCount": 0,
@@ -12,8 +12,8 @@
       "direction": "SHORT?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 0.98,
-      "range": 0.32,
+      "natr": 0.86,
+      "range": 0.14,
       "impulse": 7.45,
       "displacement": 7.45,
       "volumeX": 18.43,
@@ -593,13 +593,13 @@
         {
           "t": 1783455900000,
           "o": 0.0283,
-          "h": 0.02834,
+          "h": 0.0284,
           "l": 0.02828,
-          "c": 0.0283,
-          "v": 383140.0
+          "c": 0.02834,
+          "v": 1046018.0
         }
       ],
-      "lastPrice": 0.0283,
+      "lastPrice": 0.02834,
       "lastCandleTime": "2026-07-07T20:25:00.0000000+00:00"
     },
     {
@@ -608,15 +608,15 @@
       "direction": "SHORT?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
-      "natr": 0.76,
-      "range": 0.13,
+      "natr": 0.79,
+      "range": 0.59,
       "impulse": 1.99,
       "displacement": 1.99,
       "volumeX": 2.77,
-      "width": 1.06,
+      "width": 1.08,
       "breakoutTime": "",
       "entryTime": "",
-      "heat": 0.76,
+      "heat": 0.79,
       "candles": [
         {
           "t": 1783434600000,
@@ -1189,13 +1189,13 @@
         {
           "t": 1783455900000,
           "o": 490.32,
-          "h": 491.87,
+          "h": 492.28,
           "l": 490.32,
-          "c": 491.72,
-          "v": 1594.953
+          "c": 491.47,
+          "v": 2431.139
         }
       ],
-      "lastPrice": 491.72,
+      "lastPrice": 491.47,
       "lastCandleTime": "2026-07-07T20:25:00.0000000+00:00"
     }
   ]
