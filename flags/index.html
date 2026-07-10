@@ -119,7 +119,7 @@
     <div class="summary" id="summary"><div class="pill">Загрузка data.json...</div></div>
   </header>
   <main><section class="grid" id="grid"></section></main>
-  <footer>Это observer/paper screener: импульс старшего ТФ + проторговка минимум 20 минут. Не является рекомендацией к сделке.</footer>
+  <footer>Это observer/paper screener: импульс старшего ТФ + проторговка минимум 20 минут внутри диапазона импульса. Не является рекомендацией к сделке.</footer>
   <script>
     const summary = document.getElementById("summary");
     const grid = document.getElementById("grid");
@@ -196,7 +196,7 @@
                 ${metric("Base time", `${fmt(card.consolidationMinutes, 0)}m`)}
                 ${metric("Base width", `${fmt(card.consolidationWidthPct)}%`)}
                 ${metric("Retrace", `${fmt(card.consolidationRetracePct, 1)}%`)}
-                ${metric("Vol 24h", `${fmt(card.volume24hM, 1)}M`)}
+                ${metric("Impulse box", `${compactPrice(card.impulseLow)}-${compactPrice(card.impulseHigh)}`)}
                 ${metric("Trades 15m", fmt(card.trades15m, 0))}
               </div>
             </div>
