@@ -173,12 +173,12 @@
             <div class="chart-stack">
               <div class="chart">
                 <canvas data-timeframe="m15" width="1380" height="520"></canvas>
-                <div class="tag">M15 impulse</div>
+                <div class="tag">M15 impulse marked</div>
                 <div class="price">${compactPrice(card.lastPrice)}</div>
               </div>
               <div class="chart">
                 <canvas data-timeframe="m5" width="1380" height="520"></canvas>
-                <div class="tag">M5 consolidation</div>
+                <div class="tag">M5 base zone</div>
               </div>
             </div>
             <div class="body">
@@ -223,8 +223,24 @@
       const step = (w - pad.left - pad.right) / candles.length;
       const bodyW = Math.max(3, Math.min(8, step * .58));
       const y = (p) => pad.top + ((max - p) / (max - min)) * plotH;
+      const xAt = (index) => pad.left + (index + .5) * step;
+      const nearestIndex = (isoTime) => {
+        const target = new Date(isoTime).getTime();
+        if (!Number.isFinite(target)) return -1;
+        let best = -1;
+        let bestDelta = Infinity;
+        candles.forEach((c, i) => {
+          const delta = Math.abs(Number(c.t) - target);
+          if (delta < bestDelta) {
+            best = i;
+            bestDelta = delta;
+          }
+        });
+        return best;
+      };
+      const dirColor = String(card.direction).toUpperCase() === "SHORT" ? "#ff6075" : "#31dd8d";
       candles.forEach((c, i) => {
-        const x = pad.left + (i + .5) * step;
+        const x = xAt(i);
         const o = Number(c.o), hi = Number(c.h), lo = Number(c.l), cl = Number(c.c);
         const up = cl >= o;
         const color = up ? "#31dd8d" : "#ff6075";
@@ -239,15 +255,61 @@
         const bottom = y(Math.min(o, cl));
         ctx.fillRect(x - bodyW / 2, top, bodyW, Math.max(2, bottom - top));
       });
-      if (timeframe === "m5" && Number.isFinite(Number(card.consolidationHigh)) && Number.isFinite(Number(card.consolidationLow))) {
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = "rgba(244,189,83,.95)";
-        [Number(card.consolidationHigh), Number(card.consolidationLow)].forEach((level) => {
+      if (timeframe === "m15") {
+        const start = nearestIndex(card.impulseStartTime);
+        const end = nearestIndex(card.impulseEndTime);
+        if (start >= 0 && end >= start) {
+          const startCandle = candles[start];
+          const endCandle = candles[end];
+          const x1 = xAt(start);
+          const x2 = xAt(end);
+          const y1 = y(Number(startCandle.o));
+          const y2 = y(Number(endCandle.c));
+          ctx.save();
+          ctx.fillStyle = String(card.direction).toUpperCase() === "SHORT" ? "rgba(255,96,117,.10)" : "rgba(49,221,141,.10)";
+          ctx.fillRect(x1 - step / 2, pad.top, Math.max(step, x2 - x1 + step), plotH);
+          ctx.strokeStyle = dirColor;
+          ctx.lineWidth = 5;
+          ctx.lineCap = "round";
           ctx.beginPath();
-          ctx.moveTo(pad.left, y(level));
-          ctx.lineTo(w - pad.right, y(level));
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
           ctx.stroke();
-        });
+          const angle = Math.atan2(y2 - y1, x2 - x1);
+          const head = 18;
+          ctx.beginPath();
+          ctx.moveTo(x2, y2);
+          ctx.lineTo(x2 - head * Math.cos(angle - .48), y2 - head * Math.sin(angle - .48));
+          ctx.lineTo(x2 - head * Math.cos(angle + .48), y2 - head * Math.sin(angle + .48));
+          ctx.closePath();
+          ctx.fillStyle = dirColor;
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+      if (timeframe === "m5" && Number.isFinite(Number(card.consolidationHigh)) && Number.isFinite(Number(card.consolidationLow))) {
+        const start = nearestIndex(card.consolidationStartTime);
+        const end = nearestIndex(card.consolidationEndTime);
+        if (start >= 0 && end >= start) {
+          const high = Number(card.consolidationHigh);
+          const low = Number(card.consolidationLow);
+          const x1 = xAt(start) - step / 2;
+          const x2 = xAt(end) + step / 2;
+          const top = y(high);
+          const bottom = y(low);
+          ctx.save();
+          ctx.fillStyle = "rgba(244,189,83,.13)";
+          ctx.strokeStyle = "rgba(244,189,83,.96)";
+          ctx.lineWidth = 3;
+          ctx.setLineDash([12, 8]);
+          ctx.fillRect(x1, top, Math.max(step, x2 - x1), Math.max(6, bottom - top));
+          ctx.strokeRect(x1, top, Math.max(step, x2 - x1), Math.max(6, bottom - top));
+          ctx.setLineDash([]);
+          ctx.fillStyle = "rgba(244,189,83,.96)";
+          ctx.font = "800 22px Inter, system-ui, sans-serif";
+          ctx.fillText("base", x1 + 10, Math.max(pad.top + 24, top - 8));
+          ctx.restore();
+        }
       }
     }
     function drawAll(cards) {
