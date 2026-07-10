@@ -1,35 +1,27 @@
 {
-  "updatedAt": "2026-07-10T15:34:01.3748270Z",
+  "updatedAt": "2026-07-10T15:35:05.0117790Z",
   "stateUpdatedAt": "2026-07-10T15:33:34.469139Z",
   "watchlistCount": 1,
-  "setupCount": 1,
+  "setupCount": 0,
   "openTradeCount": 0,
   "maxSetupAgeMinutes": 20,
   "cards": [
     {
       "symbol": "RAREUSDT",
-      "status": "WAITING_RETEST",
-      "direction": "LONG",
+      "status": "WATCHLIST",
+      "direction": "LONG?",
       "pattern": "IMPULSE_SHELF_FLAG",
       "lineMode": "IMPULSE_SHELF",
       "natr": 3.07,
       "range": 2.08,
-      "impulse": 6.8837897853441925,
-      "displacement": 6.8837897853441925,
-      "volumeX": 17.126850860380994,
-      "width": 5.110497237569069,
-      "breakoutTime": "2026-07-10T18:15:00",
+      "impulse": 6.88,
+      "displacement": 6.88,
+      "volumeX": 17.13,
+      "width": 5.11,
+      "breakoutTime": "",
       "entryTime": "",
       "heat": 3.07,
       "candles": [
-        {
-          "t": 1783676100000,
-          "o": 0.013,
-          "h": 0.01324,
-          "l": 0.013,
-          "c": 0.01323,
-          "v": 3421862.0
-        },
         {
           "t": 1783676400000,
           "o": 0.01322,
@@ -595,12 +587,20 @@
           "o": 0.01419,
           "h": 0.01419,
           "l": 0.01384,
-          "c": 0.01395,
-          "v": 44680402.0
+          "c": 0.01393,
+          "v": 48483235.0
+        },
+        {
+          "t": 1783697700000,
+          "o": 0.01393,
+          "h": 0.01393,
+          "l": 0.01391,
+          "c": 0.01391,
+          "v": 238603.0
         }
       ],
-      "lastPrice": 0.01395,
-      "lastCandleTime": "2026-07-10T15:30:00.0000000+00:00"
+      "lastPrice": 0.01391,
+      "lastCandleTime": "2026-07-10T15:35:00.0000000+00:00"
     }
   ]
 }
