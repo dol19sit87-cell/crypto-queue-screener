@@ -35,7 +35,22 @@
       border-bottom: 1px solid var(--line);
       background: rgba(7, 11, 14, .96);
     }
-    h1 { margin: 0 0 9px; font-size: 23px; letter-spacing: 0; }
+    .head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 9px; }
+    h1 { margin: 0; font-size: 23px; letter-spacing: 0; }
+    .notify {
+      min-height: 30px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #101a22;
+      color: var(--muted);
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .notify.on { color: var(--amber); border-color: rgba(244,189,83,.72); }
+    .notify:disabled { cursor: not-allowed; opacity: .65; }
     .summary { display: flex; flex-wrap: wrap; gap: 8px; color: var(--muted); font-size: 13px; }
     .pill {
       min-height: 30px;
@@ -60,6 +75,7 @@
     }
     .card.long { border-color: rgba(49, 221, 141, .42); }
     .card.short { border-color: rgba(255, 96, 117, .46); }
+    .card.new-card { box-shadow: 0 0 0 2px rgba(244,189,83,.82), 0 18px 36px rgba(244,189,83,.13); }
     .chart-stack { display: grid; grid-template-rows: 1fr 1fr; min-height: min(62vh, 560px); }
     .chart {
       min-height: min(31vh, 280px);
@@ -115,7 +131,10 @@
 </head>
 <body>
   <header>
-    <h1>Flag Prep Screener</h1>
+    <div class="head">
+      <h1>Flag Prep Screener</h1>
+      <button class="notify" id="notifyButton" type="button">Включить сигнал</button>
+    </div>
     <div class="summary" id="summary"><div class="pill">Загрузка data.json...</div></div>
   </header>
   <main><section class="grid" id="grid"></section></main>
@@ -123,6 +142,11 @@
   <script>
     const summary = document.getElementById("summary");
     const grid = document.getElementById("grid");
+    const notifyButton = document.getElementById("notifyButton");
+    const storageKey = "flag-prep-known-symbols-v1";
+    const notifyKey = "flag-prep-notify-enabled-v1";
+    let audioContext = null;
+    let lastNewSymbols = [];
     const dataSources = [
       { type: "github-api", url: "https://api.github.com/repos/dol19sit87-cell/crypto-queue-screener/contents/flags/data.json?ref=main" },
       { type: "json", url: "https://raw.githubusercontent.com/dol19sit87-cell/crypto-queue-screener/main/flags/data.json" },
@@ -159,17 +183,93 @@
         `Refresh: ${data.refreshMinutes ?? 1}m`
       ].map((x) => `<div class="pill">${x}</div>`).join("");
     }
-    function renderCards(cards) {
+    function readKnownSymbols() {
+      try {
+        const raw = localStorage.getItem(storageKey);
+        const values = raw ? JSON.parse(raw) : [];
+        return new Set(Array.isArray(values) ? values : []);
+      } catch {
+        return new Set();
+      }
+    }
+    function saveKnownSymbols(symbols) {
+      localStorage.setItem(storageKey, JSON.stringify([...symbols].sort()));
+    }
+    function notificationsEnabled() {
+      return localStorage.getItem(notifyKey) === "1";
+    }
+    function updateNotifyButton() {
+      const enabled = notificationsEnabled();
+      notifyButton.classList.toggle("on", enabled);
+      if (!("Notification" in window)) {
+        notifyButton.textContent = enabled ? "Сигнал ON" : "Включить сигнал";
+        return;
+      }
+      if (enabled && Notification.permission === "granted") {
+        notifyButton.textContent = "Сигнал ON";
+      } else if (Notification.permission === "denied") {
+        notifyButton.textContent = "Звук ON, уведомления запрещены";
+      } else {
+        notifyButton.textContent = "Включить сигнал";
+      }
+    }
+    function ensureAudio() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioContext.state === "suspended") audioContext.resume();
+    }
+    function playSignal() {
+      try {
+        ensureAudio();
+        const now = audioContext.currentTime;
+        [740, 980, 1240].forEach((freq, i) => {
+          const osc = audioContext.createOscillator();
+          const gain = audioContext.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, now + i * .13);
+          gain.gain.setValueAtTime(0.001, now + i * .13);
+          gain.gain.exponentialRampToValueAtTime(0.18, now + i * .13 + .02);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * .13 + .11);
+          osc.connect(gain);
+          gain.connect(audioContext.destination);
+          osc.start(now + i * .13);
+          osc.stop(now + i * .13 + .12);
+        });
+      } catch {}
+    }
+    function getNewCards(cards) {
+      const symbols = new Set(cards.map((card) => card.symbol).filter(Boolean));
+      const known = readKnownSymbols();
+      const hasHistory = known.size > 0;
+      const newCards = hasHistory ? cards.filter((card) => card.symbol && !known.has(card.symbol)) : [];
+      saveKnownSymbols(symbols);
+      return newCards;
+    }
+    function notifyNewSymbols(newCards) {
+      if (!newCards.length || !notificationsEnabled()) return;
+      playSignal();
+      const symbols = newCards.map((card) => card.symbol).filter(Boolean);
+      document.title = `NEW FLAGS: ${symbols.join(", ")}`;
+      setTimeout(() => { document.title = "Flag Prep Screener"; }, 12000);
+      if ("Notification" in window && Notification.permission === "granted") {
+        const body = newCards.map((card) => `${card.symbol} - ${card.direction} - ${card.status}`).join("\n");
+        new Notification("Новый флаг", { body });
+      }
+    }
+    function renderCards(cards, newSymbols = []) {
       if (!cards.length) {
         grid.innerHTML = `<div class="empty">Сейчас нет монет, где одновременно есть импульс старшего ТФ и проторговка минимум 20 минут.</div>`;
         return;
       }
+      const fresh = new Set(newSymbols);
       grid.innerHTML = cards.map((card, index) => {
         const dir = String(card.direction || "").toLowerCase();
         const status = card.status === "BREAKOUT_WITH_IMPULSE" ? "BREAKOUT" : "FLAG FORMING";
         const statusCls = card.status === "BREAKOUT_WITH_IMPULSE" ? " breakout" : "";
+        const freshCls = fresh.has(card.symbol) ? " new-card" : "";
         return `
-          <article class="card ${dir}" data-index="${index}">
+          <article class="card ${dir}${freshCls}" data-index="${index}">
             <div class="chart-stack">
               <div class="chart">
                 <canvas data-timeframe="m15" width="1380" height="520"></canvas>
@@ -348,15 +448,28 @@
         }
         if (!data) throw lastError || new Error("data.json unavailable");
         const cards = Array.isArray(data.cards) ? data.cards : [];
+        const newCards = getNewCards(cards);
+        lastNewSymbols = newCards.map((card) => card.symbol).filter(Boolean);
         renderSummary(data);
-        renderCards(cards);
+        renderCards(cards, lastNewSymbols);
         drawAll(cards);
+        notifyNewSymbols(newCards);
       } catch (error) {
         summary.innerHTML = `<div class="pill">Ошибка data.json</div>`;
         grid.innerHTML = `<div class="empty">${error.message}</div>`;
       }
     }
+    notifyButton.addEventListener("click", async () => {
+      ensureAudio();
+      if ("Notification" in window && Notification.permission === "default") {
+        await Notification.requestPermission();
+      }
+      localStorage.setItem(notifyKey, "1");
+      playSignal();
+      updateNotifyButton();
+    });
     window.addEventListener("resize", load);
+    updateNotifyButton();
     load();
     setInterval(load, 60_000);
   </script>
